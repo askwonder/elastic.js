@@ -195,31 +195,12 @@
        @param {(String|String[])} excludes The  optional field or list of fields to exclude.
        @returns {Object} returns <code>this</code> so that calls can be chained.
        */
-      source: function (includes, excludes) {
-        if (includes === undefined && excludes === undefined) {
-          return agg[name].top_hits._source;
+      source: function (source) {
+        if (source === null) {
+          return agg[name].top_hits.sort;
         }
 
-        if (!isArray(includes) && !isString(includes) && !isBoolean(includes)) {
-          throw new TypeError('Argument includes must be a string, an array, or a boolean');
-        }
-
-        if (excludes !== undefined && !isArray(excludes) && !isString(excludes)) {
-          throw new TypeError('Argument excludes must be a string or an array');
-        }
-
-        if (isBoolean(includes)) {
-          agg[name].top_hits._source = includes;
-        } else {
-          agg[name].top_hits._source = {
-            includes: includes
-          };
-
-          if (excludes !== undefined) {
-            agg[name].top_hits._source = excludes;
-          }
-        }
-
+        agg[name].top_hits._source = source;
         return this;
       }
     });
